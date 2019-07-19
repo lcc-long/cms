@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.lcc.basic.entity">
+    <class name="com.lcc.basic.test.Teacher" table="t_teacher">
+        <id name="id">
+            <generator class="native"/>
+        </id>
+        <property name="name"/>
+        <set name="stus" table="stu_tea">
+            <key column="t_id"></key>
+            <many-to-many class="com.lcc.basic.test.Student" column="s_id"></many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>
