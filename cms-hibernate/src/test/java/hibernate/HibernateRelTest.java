@@ -1,3 +1,5 @@
+package hibernate;
+
 import com.lcc.basic.test.Student;
 import com.lcc.basic.test.Teacher;
 import com.lcc.basic.util.HibernateUtil;

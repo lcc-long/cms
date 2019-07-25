@@ -1,3 +1,5 @@
+package hibernate;
+
 import com.lcc.basic.test.Dept;
 import com.lcc.basic.test.Staff;
 import com.lcc.basic.test.Student;
@@ -22,6 +24,13 @@ public class HibernateCascadeTest {
             staff.setDept(dept);
             //这句话可以有可以没有，具体作用在讲解inverse的时候在说
             dept.getStaffSet().add(staff);
+
+//            Staff staff1 = new Staff();
+//            staff1.setName("www1");
+//            //这个就是设置相关联的对象
+//            staff1.setDept(dept);
+//            //这句话可以有可以没有，具体作用在讲解inverse的时候在说
+//            dept.getStaffSet().add(staff1);
 
             session.save(dept);
             //只需要保存staff，就会将dept也一并保存了。

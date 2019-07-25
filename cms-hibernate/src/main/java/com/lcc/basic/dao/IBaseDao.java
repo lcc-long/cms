@@ -79,6 +79,9 @@ public interface IBaseDao<T> {
     public Object queryObject(String hql,Object arg);
     public Object queryObject(String hql);
 
+    public Object queryObject(String hql, Object[] args, Map<String, Object> alias);
+    public Object queryObjectByAlias(String hql, Map<String, Object> alias);
+
     /**
      * 根据hql更新对象
      * @param hql
@@ -93,19 +96,19 @@ public interface IBaseDao<T> {
      * @param sql
      * @param args
      * @param clz 实体对象
-     * @param hasEntity
+     * @param hasEntity hibernate所管理的实体
      * @return
      */
-    public List<T> listBySql(String sql,Object[] args,Class<T> clz,boolean hasEntity);
-    public List<T> listBySql(String sql,Object arg,Class<T> clz,boolean hasEntity);
-    public List<T> listBySql(String sql,Class<T> clz,boolean hasEntity);
-    public List<T> listBySql(String sql,Object[] args,Map<String,Object> alias,Class<T> clz,boolean hasEntity);
-    public List<T> listByAliasSql(String sql,Map<String,Object> alias,Class<T> clz,boolean hasEntity);
+    public List<Object> listBySql(String sql,Object[] args,Class<Object> clz,boolean hasEntity);
+    public List<Object> listBySql(String sql,Object arg,Class<Object> clz,boolean hasEntity);
+    public List<Object> listBySql(String sql,Class<Object> clz,boolean hasEntity);
+    public List<Object> listBySql(String sql,Object[] args,Map<String,Object> alias,Class<Object> clz,boolean hasEntity);
+    public List<Object> listByAliasSql(String sql,Map<String,Object> alias,Class<Object> clz,boolean hasEntity);
 
 
-    public Pager<T> findBySql(String sql,Object[] args,Class<T> clz,boolean hasEntity);
-    public Pager<T> findBySql(String sql,Object arg,Class<T> clz,boolean hasEntity);
-    public Pager<T> findBySql(String sql,Class<T> clz,boolean hasEntity);
-    public Pager<T> findBySql(String sql,Object[] args,Map<String,Object> alias,Class<T> clz,boolean hasEntity);
-    public Pager<T> findByAliasSql(String sql,Map<String,Object> alias,Class<T> clz,boolean hasEntity);
+    public Pager<Object> findBySql(String sql,Object[] args,Class<Object> clz,boolean hasEntity);
+    public Pager<Object> findBySql(String sql,Object arg,Class<Object> clz,boolean hasEntity);
+    public Pager<Object> findBySql(String sql,Class<Object> clz,boolean hasEntity);
+    public Pager<Object> findBySql(String sql,Object[] args,Map<String,Object> alias,Class<Object> clz,boolean hasEntity);
+    public Pager<Object> findByAliasSql(String sql,Map<String,Object> alias,Class<Object> clz,boolean hasEntity);
 }

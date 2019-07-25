@@ -44,7 +44,7 @@ public class SystemContext {
     }
 
     public static void setSort(String _sort) {
-        SystemContext.sort.set(_sort);
+        sort.set(_sort);
     }
 
     public static String getOrder() {
@@ -52,7 +52,7 @@ public class SystemContext {
     }
 
     public static void setOrder(String _order) {
-        SystemContext.order.set(_order);
+        order.set(_order);
     }
 
     public static void removePageSize() {

@@ -1,3 +1,5 @@
+package hibernate;
+
 import com.lcc.basic.test.User;
 import com.lcc.basic.util.HibernateUtil;
 import org.hibernate.Session;
