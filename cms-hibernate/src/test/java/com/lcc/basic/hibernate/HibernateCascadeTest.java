@@ -1,4 +1,4 @@
-package hibernate;
+package com.lcc.basic.hibernate;
 
 import com.lcc.basic.test.Dept;
 import com.lcc.basic.test.Staff;

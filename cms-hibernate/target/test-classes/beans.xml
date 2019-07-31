@@ -3,16 +3,20 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context.xsd
                            http://www.springframework.org/schema/aop
                            http://www.springframework.org/schema/aop/spring-aop.xsd
-">
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx.xsd
+                         ">
     <!--打开spring的Annotation支持-->
     <context:annotation-config/>
-    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+    <context:component-scan base-package="com.lcc.basic.dao"/>
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url"
                   value="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;serverTimezone=GMT%2B8"/>
@@ -33,7 +37,7 @@
         <property name="dataSource" ref="dataSource"/>
         <!-- 设置Spring取那个包中查找相应的实体类 -->
         <property name="packagesToScan">
-            <value>model</value>
+            <value>com.lcc.basic.model</value>
         </property>
         <property name="hibernateProperties">
             <props>
@@ -49,10 +53,23 @@
     <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+
     <aop:config>
-
-
-
+         <aop:pointcut id="allMethods"
+                       expression="execution(* com.lcc.basic.dao.*.*(..))"/>
+        <!-- 通过advisor来确定具体要加入事务控制的方法 -->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="allMethods"/>
     </aop:config>
 
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <!-- 让所有的方法都加入事务管理，为了提高效率，可以把一些查询之类的方法设置为只读的事务 -->
+            <tx:method name="*" propagation="REQUIRED" read-only="true"/>
+            <!-- 以下方法都是可能设计修改的方法，就无法设置为只读 -->
+            <tx:method name="add*" propagation="REQUIRED"/>
+            <tx:method name="del*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="save*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
 </beans>

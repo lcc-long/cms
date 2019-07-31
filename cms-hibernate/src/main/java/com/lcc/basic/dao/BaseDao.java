@@ -8,7 +8,8 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.hibernate.transform.Transformers;
 
-import javax.annotation.Resource;
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.List;
@@ -17,8 +18,9 @@ import java.util.Set;
 
 public class BaseDao<T> implements IBaseDao<T> {
 
-    @Resource
-    private SessionFactory sessionFacotry;
+    @Inject
+    @Named("sessionFactory")
+    private SessionFactory sessionFactory;
 
     private Class<Object> clz;
 
@@ -30,7 +32,7 @@ public class BaseDao<T> implements IBaseDao<T> {
     }
 
     protected Session getSession() {
-        return sessionFacotry.getCurrentSession();
+        return sessionFactory.getCurrentSession();
     }
 
 
@@ -72,7 +74,7 @@ public class BaseDao<T> implements IBaseDao<T> {
         if (sort != null && !"".equals(sort.trim())) {
             hql += " order by " + sort;
             if (order != null) {
-                hql += order;
+                hql += " " + order;
             }
         }
         return hql;
@@ -94,7 +96,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 
     private void setParameter(Query query, Object[] args) {
         if (args != null && args.length > 0) {
-            int index = 0;
+            int index = 1;
             for (Object arg : args) {
                 query.setParameter(index++, arg);
             }
@@ -145,7 +147,7 @@ public class BaseDao<T> implements IBaseDao<T> {
         query.setFirstResult(pageOffset).setMaxResults(pageSize);
     }
 
-    private String getCountHql(String hql,boolean isHql) {
+    private String getCountHql(String hql, boolean isHql) {
         String e = hql.substring(hql.indexOf("from"));
         String c = "select count(*) " + e;
         if (isHql) {
@@ -158,8 +160,7 @@ public class BaseDao<T> implements IBaseDao<T> {
     @Override
     public Pager<T> find(String hql, Object[] args, Map<String, Object> alias) {
         hql = initSort(hql);
-        String cq = getCountHql(hql,true);
-        cq = initSort(cq);
+        String cq = getCountHql(hql, true);
         Query cquery = getSession().createQuery(cq);
         Query query = getSession().createQuery(hql);
         setAliasParameter(query, alias);
@@ -187,7 +188,7 @@ public class BaseDao<T> implements IBaseDao<T> {
 
     @Override
     public Object queryObject(String hql, Object arg) {
-        return this.queryObject(hql,new Object[]{arg});
+        return this.queryObject(hql, new Object[]{arg});
     }
 
     @Override
@@ -205,13 +206,13 @@ public class BaseDao<T> implements IBaseDao<T> {
 
     @Override
     public Object queryObjectByAlias(String hql, Map<String, Object> alias) {
-        return this.queryObject(hql,null,alias);
+        return this.queryObject(hql, null, alias);
     }
 
     @Override
     public void updateByHql(String hql, Object[] args) {
         Query query = getSession().createQuery(hql);
-        setParameter(query,args);
+        setParameter(query, args);
         query.executeUpdate();
     }
 
@@ -227,17 +228,17 @@ public class BaseDao<T> implements IBaseDao<T> {
 
     @Override
     public List<Object> listBySql(String sql, Object[] args, Class<Object> clz, boolean hasEntity) {
-        return this.listBySql(sql, args, null,clz,hasEntity);
+        return this.listBySql(sql, args, null, clz, hasEntity);
     }
 
     @Override
     public List<Object> listBySql(String sql, Object arg, Class<Object> clz, boolean hasEntity) {
-        return  this.listBySql(sql, new Object[]{arg},clz,hasEntity);
+        return this.listBySql(sql, new Object[]{arg}, clz, hasEntity);
     }
 
     @Override
     public List<Object> listBySql(String sql, Class<Object> clz, boolean hasEntity) {
-        return this.listBySql(sql, null,clz,hasEntity);
+        return this.listBySql(sql, null, clz, hasEntity);
     }
 
     @Override
@@ -256,29 +257,28 @@ public class BaseDao<T> implements IBaseDao<T> {
 
     @Override
     public List<Object> listByAliasSql(String sql, Map<String, Object> alias, Class<Object> clz, boolean hasEntity) {
-        return this.listBySql(sql, null,alias,clz,hasEntity);
+        return this.listBySql(sql, null, alias, clz, hasEntity);
     }
 
     @Override
     public Pager<Object> findBySql(String sql, Object[] args, Class<Object> clz, boolean hasEntity) {
-        return this.findBySql(sql, args, null,clz,hasEntity);
+        return this.findBySql(sql, args, null, clz, hasEntity);
     }
 
     @Override
     public Pager<Object> findBySql(String sql, Object arg, Class<Object> clz, boolean hasEntity) {
-        return this.findBySql(sql, new Object[]{arg},clz,hasEntity);
+        return this.findBySql(sql, new Object[]{arg}, clz, hasEntity);
     }
 
     @Override
     public Pager<Object> findBySql(String sql, Class<Object> clz, boolean hasEntity) {
-        return this.findBySql(sql, null,clz,hasEntity);
+        return this.findBySql(sql, null, clz, hasEntity);
     }
 
     @Override
     public Pager<Object> findBySql(String sql, Object[] args, Map<String, Object> alias, Class<Object> clz, boolean hasEntity) {
-        String cq = getCountHql(sql,false);
+        String cq = getCountHql(sql, false);
         cq = initSort(cq);
-        sql = initSort(sql);
         NativeQuery sq = getSession().createNativeQuery(sql);
         NativeQuery cquery = getSession().createNativeQuery(cq);
         setAliasParameter(sq, alias);
@@ -286,7 +286,7 @@ public class BaseDao<T> implements IBaseDao<T> {
         setParameter(sq, args);
         setParameter(cquery, args);
         Pager<Object> pager = new Pager<>();
-        setPagers(sq,pager);
+        setPagers(sq, pager);
         if (hasEntity) {
             sq.addEntity(clz);
         } else {
@@ -301,6 +301,6 @@ public class BaseDao<T> implements IBaseDao<T> {
 
     @Override
     public Pager<Object> findByAliasSql(String sql, Map<String, Object> alias, Class<Object> clz, boolean hasEntity) {
-        return this.findBySql(sql, null, alias,clz,hasEntity);
+        return this.findBySql(sql, null, alias, clz, hasEntity);
     }
 }

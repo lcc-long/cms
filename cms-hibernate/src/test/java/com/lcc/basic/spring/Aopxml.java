@@ -1,4 +1,4 @@
-package spring;
+package com.lcc.basic.spring;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;

@@ -1,4 +1,4 @@
-package spring;
+package com.lcc.basic.spring;
 
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;

@@ -1,4 +1,4 @@
-package hibernate;
+package com.lcc.basic.hibernate;
 
 import com.lcc.basic.test.User;
 import com.lcc.basic.util.HibernateUtil;
