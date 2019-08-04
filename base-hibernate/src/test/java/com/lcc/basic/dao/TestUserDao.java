@@ -55,6 +55,7 @@ public class TestUserDao extends AbstractDbUnitTestCase {
 
     @Before
     public void setUp() throws SQLException, IOException, DataSetException {
+        //解决延迟加载
         Session session = sessionFactory.openSession();
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
         this.backupAllTable();

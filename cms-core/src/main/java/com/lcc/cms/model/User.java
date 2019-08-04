@@ -20,14 +20,14 @@ public class User {
     @Email(message = "邮件格式不正确")
     private String email;
     private String phone;
-    private String status;
+    private int status;
     @Column(name = "create_date")
     private Date createDate;
 
     public User() {
     }
 
-    public User(int id, String username, String password, String nickname, String email, String phone, String status, Date createDate) {
+    public User(int id, String username, String password, String nickname, String email, String phone, int status) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -35,7 +35,6 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.status = status;
-        this.createDate = createDate;
     }
 
     public int getId() {
@@ -86,11 +85,11 @@ public class User {
         this.phone = phone;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

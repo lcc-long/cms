@@ -5,35 +5,45 @@ import javax.persistence.*;
 @Entity
 @Table(name = "t_role")
 public class Role {
-    @Id
-    @GeneratedValue
-    private int id;
-    private String name;
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "role_type")
-    private RoleType roleType;
+	@Id
+	@GeneratedValue
+	private int id;
+	private String name;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "role_type")
+	private RoleType roleType;
 
-    public int getId() {
-        return id;
-    }
+	public Role() {
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public Role(int id, String name, RoleType roleType) {
+		this.id = id;
+		this.id = id;
+		this.name = name;
+		this.roleType = roleType;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public RoleType getRoleType() {
-        return roleType;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setRoleType(RoleType roleType) {
-        this.roleType = roleType;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public RoleType getRoleType() {
+		return roleType;
+	}
+
+	public void setRoleType(RoleType roleType) {
+		this.roleType = roleType;
+	}
 }
