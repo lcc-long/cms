@@ -1,4 +1,4 @@
-package com.lcc.service;
+package com.lcc.cms.service;
 
 import com.lcc.basic.model.Pager;
 import com.lcc.cms.dao.IGroupDao;
