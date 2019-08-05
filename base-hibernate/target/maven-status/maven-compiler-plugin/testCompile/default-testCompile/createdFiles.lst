@@ -1,0 +1,7 @@
+com\lcc\basic\util\EntitiesHelper.class
+com\lcc\basic\dao\UserDao.class
+com\lcc\basic\dao\IUserDao.class
+com\lcc\basic\dao\TestUserDao.class
+com\lcc\basic\util\AbstractDbUnitTestCase.class
+com\lcc\basic\model\User.class
+com\lcc\basic\util\DbUtil.class

@@ -56,7 +56,7 @@
 
     <aop:config>
          <aop:pointcut id="allMethods"
-                       expression="execution(* com.lcc.cms.service.*.*(..))"/>
+                       expression="execution(* com.lcc.cms.dao.*.*(..))"/>
         <!-- 通过advisor来确定具体要加入事务控制的方法 -->
         <aop:advisor advice-ref="txAdvice" pointcut-ref="allMethods"/>
     </aop:config>

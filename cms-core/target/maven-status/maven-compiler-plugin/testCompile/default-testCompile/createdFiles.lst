@@ -1,0 +1,4 @@
+com\lcc\cms\dao\TestUserDao.class
+com\lcc\cms\util\DbUtil.class
+com\lcc\cms\util\EntitiesHelper.class
+com\lcc\cms\util\AbstractDbUnitTestCase.class

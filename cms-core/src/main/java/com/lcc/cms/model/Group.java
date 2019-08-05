@@ -17,10 +17,9 @@ public class Group {
     public Group() {
     }
 
-    public Group(int id, String name, String descr) {
+    public Group(int id, String name) {
         this.id = id;
         this.name = name;
-        this.descr = descr;
     }
 
     public int getId() {

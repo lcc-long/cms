@@ -10,7 +10,7 @@ public class DbUtil {
 	public static Connection getConnection() throws SQLException {
 		Connection con = null;
 		con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cms?useUnicode=true&characterEncoding=UTF-8",
-				"root", "123456");
+				"root", "fxkj@1234");
 		return con;
 	}
 	

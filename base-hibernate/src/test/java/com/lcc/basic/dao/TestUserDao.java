@@ -78,134 +78,134 @@ public class TestUserDao extends AbstractDbUnitTestCase {
         System.out.println(user.getUsername());
     }
 
-    @Test
-    public void testListByArgs() throws DatabaseUnitException, SQLException {
-        IDataSet ds = createDateSet("t_user");
-        DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, ds);
-        SystemContext.setOrder("desc");
-        SystemContext.setSort("id");
-        List<User> actuals = userDao.list("from User where id>?1 and id<?2", new Object[]{1, 4});
-        List<User> expected = Arrays.asList(new User(3, "admin3"), new User(2, "admin2"));
-        assertNotNull(actuals);
-        assertTrue(actuals.size() == 2);
-        EntitiesHelper.assertUsers(expected, actuals);
-    }
-
-    @Test
-    public void testListByArgsAndAlias() throws DatabaseUnitException, SQLException {
-        IDataSet ds = createDateSet("t_user");
-        DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, ds);
-        SystemContext.setOrder("asc");
-        SystemContext.setSort("id");
-        Map<String, Object> alias = new HashMap<>();
-        alias.put("ids", Arrays.asList(1, 2, 3, 5, 6, 7, 8, 9, 10));
-        List<User> actuals = userDao.list("from User where id>?1 and id<?2 and id in(:ids)", new Object[]{1, 5}, alias);
-        List<User> expected = Arrays.asList(new User(2, "admin2"), new User(3, "admin3"));
-        assertNotNull(actuals);
-        assertTrue(actuals.size() == 2);
-        EntitiesHelper.assertUsers(expected, actuals);
-    }
-
-    @Test
-    public void testFindByArgs() throws DatabaseUnitException, SQLException {
-        IDataSet ds = createDateSet("t_user");
-        DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, ds);
-        SystemContext.setOrder("desc");
-        SystemContext.setSort("id");
-        SystemContext.setPageOffset(0);
-        SystemContext.setPageSize(3);
-        Pager<User> expected = userDao.find("from User where id>=?1 and id<=?2", new Object[]{1, 10});
-        List<User> actuals = Arrays.asList(new User(10, "admin10"), new User(9, "admin9"), new User(8, "admin8"));
-        assertNotNull(expected);
-        assertTrue(expected.getTotal() == 10);
-        assertTrue(expected.getOffset() == 0);
-        assertTrue(expected.getSize() == 3);
-        EntitiesHelper.assertUsers(expected.getDatas(), actuals);
-    }
-
-    @Test
-    public void testFindByArgsAndAlias() throws DatabaseUnitException, SQLException {
-        IDataSet ds = createDateSet("t_user");
-        DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, ds);
-        SystemContext.setPageOffset(0);
-        SystemContext.setPageSize(3);
-        Map<String, Object> alias = new HashMap<>();
-        alias.put("ids", Arrays.asList(1, 2, 4, 5, 6, 7, 8, 10));
-        Pager<User> expected = userDao.find("from User where id>=?1 and id<=?2 and id in (:ids)", new Object[]{1, 10}, alias);
-        List<User> actuals = Arrays.asList(new User(1, "admin1"), new User(2, "admin2"), new User(4, "admin4"));
-        assertNotNull(expected);
-        assertTrue(expected.getTotal() == 8);
-        assertTrue(expected.getOffset() == 0);
-        assertTrue(expected.getSize() == 3);
-        EntitiesHelper.assertUsers(expected.getDatas(), actuals);
-    }
-
-    @Test
-    public void testListSQLByArgs() throws DatabaseUnitException, SQLException {
-        IDataSet ds = createDateSet("t_user");
-        DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, ds);
-        SystemContext.setOrder("desc");
-        SystemContext.setSort("id");
-        List<User> expected = userDao.listBySql("select * from t_user where id>?1 and id<?2", new Object[]{1, 4}, User.class, true);
-        List<User> actuals = Arrays.asList(new User(3,"admin3"),new User(2,"admin2"));
-        assertNotNull(expected);
-        assertTrue(expected.size()==2);
-        EntitiesHelper.assertUsers(expected, actuals);
-    }
-    @Test
-    public void testListSQLByAlias() throws DatabaseUnitException, SQLException {
-        IDataSet ds = createDateSet("t_user");
-        DatabaseOperation.CLEAN_INSERT.execute(dbunitCon,ds);
-        SystemContext.setOrder("asc");
-        SystemContext.setSort("id");
-        Map<String,Object> alias = new HashMap<String,Object>();
-        alias.put("id1", 1);
-        alias.put("id2", 5);
-        alias.put("ids", Arrays.asList(1,2,3,5,6,7,8,9,10));
-        //hibernate版本 原生不支持混合参数
-        List<User> expected = userDao.listByAliasSql("select * from t_user where id>:id1 and id<:id2 and id in(:ids)", alias,User.class,true);
-        List<User> actuals = Arrays.asList(new User(2,"admin2"),new User(3,"admin3"));
-        assertNotNull(expected);
-        assertTrue(expected.size()==2);
-        EntitiesHelper.assertUsers(expected, actuals);
-    }
-
-    @Test
-    public void testFindSQLByArgs() throws DatabaseUnitException, SQLException {
-        IDataSet ds = createDateSet("t_user");
-        DatabaseOperation.CLEAN_INSERT.execute(dbunitCon,ds);
-        SystemContext.setOrder("desc");
-        SystemContext.setSort("id");
-        SystemContext.setPageSize(3);
-        SystemContext.setPageOffset(0);
-        Pager<User> expected = userDao.findBySql("select * from t_user where id>=?1 and id<=?2", new Object[]{1,10},User.class,true);
-        List<User> actuals = Arrays.asList(new User(10,"admin10"),new User(9,"admin9"),new User(8,"admin8"));
-        assertNotNull(expected);
-        assertTrue(expected.getTotal()==10);
-        assertTrue(expected.getOffset()==0);
-        assertTrue(expected.getSize()==3);
-        EntitiesHelper.assertUsers(expected.getDatas(), actuals);
-    }
-    @Test
-    public void testFindSQLByArgsAndAlias() throws DatabaseUnitException, SQLException {
-        IDataSet ds = createDateSet("t_user");
-        DatabaseOperation.CLEAN_INSERT.execute(dbunitCon,ds);
-        SystemContext.removeOrder();
-        SystemContext.removeSort();
-        SystemContext.setPageSize(3);
-        SystemContext.setPageOffset(0);
-        Map<String,Object> alias = new HashMap<String,Object>();
-        alias.put("id1", 1);
-        alias.put("id2", 10);
-        alias.put("ids", Arrays.asList(1,2,4,5,6,7,8,10));
-        Pager<User> expected = userDao.findByAliasSql("select * from t_user where id>=:id1 and id<=:id2 and id in(:ids)",alias,User.class,true);
-        List<User> actuals = Arrays.asList(new User(1,"admin1"),new User(2,"admin2"),new User(4,"admin4"));
-        assertNotNull(expected);
-        assertTrue(expected.getTotal()==8);
-        assertTrue(expected.getOffset()==0);
-        assertTrue(expected.getSize()==3);
-        EntitiesHelper.assertUsers(expected.getDatas(), actuals);
-    }
+//    @Test
+//    public void testListByArgs() throws DatabaseUnitException, SQLException {
+//        IDataSet ds = createDateSet("t_user");
+//        DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, ds);
+//        SystemContext.setOrder("desc");
+//        SystemContext.setSort("id");
+//        List<User> actuals = userDao.list("from User where id>?1 and id<?2", new Object[]{1, 4});
+//        List<User> expected = Arrays.asList(new User(3, "admin3"), new User(2, "admin2"));
+//        assertNotNull(actuals);
+//        assertTrue(actuals.size() == 2);
+//        EntitiesHelper.assertUsers(expected, actuals);
+//    }
+//
+//    @Test
+//    public void testListByArgsAndAlias() throws DatabaseUnitException, SQLException {
+//        IDataSet ds = createDateSet("t_user");
+//        DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, ds);
+//        SystemContext.setOrder("asc");
+//        SystemContext.setSort("id");
+//        Map<String, Object> alias = new HashMap<>();
+//        alias.put("ids", Arrays.asList(1, 2, 3, 5, 6, 7, 8, 9, 10));
+//        List<User> actuals = userDao.list("from User where id>?1 and id<?2 and id in(:ids)", new Object[]{1, 5}, alias);
+//        List<User> expected = Arrays.asList(new User(2, "admin2"), new User(3, "admin3"));
+//        assertNotNull(actuals);
+//        assertTrue(actuals.size() == 2);
+//        EntitiesHelper.assertUsers(expected, actuals);
+//    }
+//
+//    @Test
+//    public void testFindByArgs() throws DatabaseUnitException, SQLException {
+//        IDataSet ds = createDateSet("t_user");
+//        DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, ds);
+//        SystemContext.setOrder("desc");
+//        SystemContext.setSort("id");
+//        SystemContext.setPageOffset(0);
+//        SystemContext.setPageSize(3);
+//        Pager<User> expected = userDao.find("from User where id>=?1 and id<=?2", new Object[]{1, 10});
+//        List<User> actuals = Arrays.asList(new User(10, "admin10"), new User(9, "admin9"), new User(8, "admin8"));
+//        assertNotNull(expected);
+//        assertTrue(expected.getTotal() == 10);
+//        assertTrue(expected.getOffset() == 0);
+//        assertTrue(expected.getSize() == 3);
+//        EntitiesHelper.assertUsers(expected.getDatas(), actuals);
+//    }
+//
+//    @Test
+//    public void testFindByArgsAndAlias() throws DatabaseUnitException, SQLException {
+//        IDataSet ds = createDateSet("t_user");
+//        DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, ds);
+//        SystemContext.setPageOffset(0);
+//        SystemContext.setPageSize(3);
+//        Map<String, Object> alias = new HashMap<>();
+//        alias.put("ids", Arrays.asList(1, 2, 4, 5, 6, 7, 8, 10));
+//        Pager<User> expected = userDao.find("from User where id>=?1 and id<=?2 and id in (:ids)", new Object[]{1, 10}, alias);
+//        List<User> actuals = Arrays.asList(new User(1, "admin1"), new User(2, "admin2"), new User(4, "admin4"));
+//        assertNotNull(expected);
+//        assertTrue(expected.getTotal() == 8);
+//        assertTrue(expected.getOffset() == 0);
+//        assertTrue(expected.getSize() == 3);
+//        EntitiesHelper.assertUsers(expected.getDatas(), actuals);
+//    }
+//
+//    @Test
+//    public void testListSQLByArgs() throws DatabaseUnitException, SQLException {
+//        IDataSet ds = createDateSet("t_user");
+//        DatabaseOperation.CLEAN_INSERT.execute(dbunitCon, ds);
+//        SystemContext.setOrder("desc");
+//        SystemContext.setSort("id");
+//        List<User> expected = userDao.listBySql("select * from t_user where id>?1 and id<?2", new Object[]{1, 4}, User.class, true);
+//        List<User> actuals = Arrays.asList(new User(3,"admin3"),new User(2,"admin2"));
+//        assertNotNull(expected);
+//        assertTrue(expected.size()==2);
+//        EntitiesHelper.assertUsers(expected, actuals);
+//    }
+//    @Test
+//    public void testListSQLByAlias() throws DatabaseUnitException, SQLException {
+//        IDataSet ds = createDateSet("t_user");
+//        DatabaseOperation.CLEAN_INSERT.execute(dbunitCon,ds);
+//        SystemContext.setOrder("asc");
+//        SystemContext.setSort("id");
+//        Map<String,Object> alias = new HashMap<String,Object>();
+//        alias.put("id1", 1);
+//        alias.put("id2", 5);
+//        alias.put("ids", Arrays.asList(1,2,3,5,6,7,8,9,10));
+//        //hibernate版本 原生不支持混合参数
+//        List<User> expected = userDao.listByAliasSql("select * from t_user where id>:id1 and id<:id2 and id in(:ids)", alias,User.class,true);
+//        List<User> actuals = Arrays.asList(new User(2,"admin2"),new User(3,"admin3"));
+//        assertNotNull(expected);
+//        assertTrue(expected.size()==2);
+//        EntitiesHelper.assertUsers(expected, actuals);
+//    }
+//
+//    @Test
+//    public void testFindSQLByArgs() throws DatabaseUnitException, SQLException {
+//        IDataSet ds = createDateSet("t_user");
+//        DatabaseOperation.CLEAN_INSERT.execute(dbunitCon,ds);
+//        SystemContext.setOrder("desc");
+//        SystemContext.setSort("id");
+//        SystemContext.setPageSize(3);
+//        SystemContext.setPageOffset(0);
+//        Pager<User> expected = userDao.findBySql("select * from t_user where id>=?1 and id<=?2", new Object[]{1,10},User.class,true);
+//        List<User> actuals = Arrays.asList(new User(10,"admin10"),new User(9,"admin9"),new User(8,"admin8"));
+//        assertNotNull(expected);
+//        assertTrue(expected.getTotal()==10);
+//        assertTrue(expected.getOffset()==0);
+//        assertTrue(expected.getSize()==3);
+//        EntitiesHelper.assertUsers(expected.getDatas(), actuals);
+//    }
+//    @Test
+//    public void testFindSQLByArgsAndAlias() throws DatabaseUnitException, SQLException {
+//        IDataSet ds = createDateSet("t_user");
+//        DatabaseOperation.CLEAN_INSERT.execute(dbunitCon,ds);
+//        SystemContext.removeOrder();
+//        SystemContext.removeSort();
+//        SystemContext.setPageSize(3);
+//        SystemContext.setPageOffset(0);
+//        Map<String,Object> alias = new HashMap<String,Object>();
+//        alias.put("id1", 1);
+//        alias.put("id2", 10);
+//        alias.put("ids", Arrays.asList(1,2,4,5,6,7,8,10));
+//        Pager<User> expected = userDao.findByAliasSql("select * from t_user where id>=:id1 and id<=:id2 and id in(:ids)",alias,User.class,true);
+//        List<User> actuals = Arrays.asList(new User(1,"admin1"),new User(2,"admin2"),new User(4,"admin4"));
+//        assertNotNull(expected);
+//        assertTrue(expected.getTotal()==8);
+//        assertTrue(expected.getOffset()==0);
+//        assertTrue(expected.getSize()==3);
+//        EntitiesHelper.assertUsers(expected.getDatas(), actuals);
+//    }
 
 
     @After

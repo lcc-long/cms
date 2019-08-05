@@ -1,0 +1,13 @@
+com\lcc\cms\model\UserGroup.class
+com\lcc\cms\model\RoleType.class
+com\lcc\cms\dao\IGroupDao.class
+com\lcc\cms\model\Role.class
+com\lcc\cms\model\CmsException.class
+com\lcc\cms\model\UserRole.class
+com\lcc\cms\dao\IUserDao.class
+com\lcc\cms\dao\GroupDao.class
+com\lcc\cms\model\User.class
+com\lcc\cms\dao\RoleDao.class
+com\lcc\cms\dao\UserDao.class
+com\lcc\cms\model\Group.class
+com\lcc\cms\dao\IRoleDao.class

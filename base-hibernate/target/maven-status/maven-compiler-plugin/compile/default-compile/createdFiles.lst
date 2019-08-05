@@ -1,0 +1,4 @@
+com\lcc\basic\dao\IBaseDao.class
+com\lcc\basic\model\SystemContext.class
+com\lcc\basic\model\Pager.class
+com\lcc\basic\dao\BaseDao.class
