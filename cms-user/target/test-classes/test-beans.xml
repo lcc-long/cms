@@ -16,13 +16,13 @@
     <!--打开spring的Annotation支持-->
     <context:annotation-config/>
     <bean id="userDao" class="org.easymock.EasyMock" factory-method="createStrictMock">
-        <constructor-arg value="com.lcc.cms.dao.IUserDao.class"/>
+        <constructor-arg value="com.lcc.cms.dao.IUserDao"/>
     </bean>
     <bean id="roleDao" class="org.easymock.EasyMock" factory-method="createStrictMock">
-        <constructor-arg value="com.lcc.cms.dao.IRoleDao.class"/>
+        <constructor-arg value="com.lcc.cms.dao.IRoleDao"/>
     </bean>
     <bean id="groupDao" class="org.easymock.EasyMock" factory-method="createStrictMock">
-        <constructor-arg value="com.lcc.cms.dao.IGroupDao.class"/>
+        <constructor-arg value="com.lcc.cms.dao.IGroupDao"/>
     </bean>
 
     <bean id="userService" class="com.lcc.cms.service.UserService">

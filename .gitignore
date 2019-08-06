@@ -13,4 +13,4 @@
 .idea/modules.xml
 # Comment next line if keeping position of elements in Navigation Editor is relevant for you
 .idea/navEditor.xml
-./target
+./target*

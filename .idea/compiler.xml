@@ -10,7 +10,17 @@
         <module name="cmscore" />
         <module name="cmsuser" />
         <module name="hibernate-root" />
+        <module name="cmsweb" />
       </profile>
     </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-encoding utf-8" />
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="cmscore" options="" />
+      <module name="cmsuser" options="" />
+      <module name="cmsweb" options="" />
+      <module name="hibernate-root" options="" />
+    </option>
   </component>
 </project>

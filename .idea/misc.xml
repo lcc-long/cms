@@ -3,6 +3,7 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/base-hibernate" />
+    <file type="web" url="file://$PROJECT_DIR$/cms-web" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">

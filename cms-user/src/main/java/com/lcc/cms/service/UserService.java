@@ -23,6 +23,31 @@ public class UserService implements IUserService {
     @Inject
     private IGroupDao groupDao;
 
+
+    public IUserDao getUserDao() {
+        return userDao;
+    }
+
+    public void setUserDao(IUserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public IRoleDao getRoleDao() {
+        return roleDao;
+    }
+
+    public void setRoleDao(IRoleDao roleDao) {
+        this.roleDao = roleDao;
+    }
+
+    public IGroupDao getGroupDao() {
+        return groupDao;
+    }
+
+    public void setGroupDao(IGroupDao groupDao) {
+        this.groupDao = groupDao;
+    }
+
     @Override
     public void add(User user, Integer[] rids, Integer[] gids) {
         User tu = userDao.loadByUsername(user.getUsername());
