@@ -1,10 +1,10 @@
 (function($){
 	$.fn.myaccordion = function(opts) {
-		var settings = $.extend({
+		var settings = $.extend({  //extend表示opts中的变量可以覆盖对象中的属性
 			selectedClz:"navSelected",
 			titleTagName:"h3"
 		},opts||{});
-		var titleNode = $(this).find("ul>"+settings.titleTagName);
+		var titleNode = $(this).find("ul>"+settings.titleTagName);  // >表示第一个子类
 		var selectedNode = $(this).find("ul."+settings.selectedClz+">"+settings.titleTagName);
 		titleNode.css("cursor","pointer");
 		titleNode.nextAll().css("display","none");

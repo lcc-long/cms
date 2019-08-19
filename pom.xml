@@ -24,6 +24,13 @@
         <maven.compiler.target>12</maven.compiler.target>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>localRepository</id>
+            <url>file:E:/maven-repo/repo</url>
+        </repository>
+    </distributionManagement>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -245,20 +252,14 @@
                     <artifactId>jetty-maven-plugin</artifactId>
                     <version>9.4.19.v20190610</version>
                     <configuration>
-                        <scanIntervalSeconds>10</scanIntervalSeconds>
+                        <httpConnector>
+                            <port>8081</port>
+                            <host>localhost</host>
+                        </httpConnector>
+                        <scanIntervalSeconds>1</scanIntervalSeconds>
                         <webApp>
                             <contextPath>/cms</contextPath>
                         </webApp>
-<!--                        <webAppConfig>-->
-<!--                            <contextPath>/cms</contextPath>-->
-<!--                            <allowDuplicateFragmentNames>true</allowDuplicateFragmentNames>-->
-<!--                        </webAppConfig>-->
-                        <scanIntervalSeconds>5</scanIntervalSeconds>
-<!--                            <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">-->
-<!--                                <port>8888</port>-->
-<!--                                <maxIdleTime>60000</maxIdleTime>-->
-<!--                            </connector>-->
-<!--                        </connectors>-->
                     </configuration>
                 </plugin>
             </plugins>
